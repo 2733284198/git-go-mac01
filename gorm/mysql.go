@@ -1,13 +1,14 @@
 package main
 
 import (
+	"fmt"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
 
 type User struct {
-	ID   int64 `gorm:"AUTO_INCREMENT"` // 设置 num 为自增类型
-	Name string
+	ID   int64  `gorm:"AUTO_INCREMENT"` // 设置 num 为自增类型
+	Name string `gorm:"default:'小王子'"`
 	Age  int64
 }
 
@@ -17,13 +18,12 @@ func main() {
 	user := User{Name: "q1mi", Age: 18}
 	db.Create(&user) // 创建user
 
-	//db.NewRecord(user) // 主键为空返回`true`
-
-	user2 := User{Name: "q1mi2", Age: 18}
-	//db.NewRecord(user2) // 主键为空返回`true`
-	db.Create(&user2) // 创建user
-
-	//db.NewRecord(user) // 创建`user`后返回`false`
+	// 查询记录
+	//res := db.First(&user)
+	//fmt.Println(res.name)
+	//
+	db.Debug().First(&user) // SELECT * FROM `user`  WHERE `user`.`deleted_at` IS NULL ORDER BY `user`.`id` ASC LIMIT 1
+	fmt.Println("根据主键查询第一条记录：", user)
 
 	defer db.Close()
 }
