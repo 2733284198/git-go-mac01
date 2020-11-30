@@ -15,15 +15,18 @@ type User struct {
 func main() {
 	db, _ := gorm.Open("mysql", "root:root@/go?charset=utf8&parseTime=True&loc=Local")
 
-	user := User{Name: "q1mi", Age: 18}
-	db.Create(&user) // 创建user
+	/*	user := User{Name: "q1mi", Age: 18}
+		db.Create(&user) // 创建user
 
-	// 查询记录
-	//res := db.First(&user)
-	//fmt.Println(res.name)
-	//
-	db.Debug().First(&user) // SELECT * FROM `user`  WHERE `user`.`deleted_at` IS NULL ORDER BY `user`.`id` ASC LIMIT 1
-	fmt.Println("根据主键查询第一条记录：", user)
+		db.Debug().First(&user)
+		fmt.Println("插入记录：", user)*/
+
+	var user []User
+	//var user User
+
+	db.Where("id > ?", "3").Find(&user)
+	// `deleted_at` IS NULL AND ((name = 'jinzhu' AND age >= '20'))
+	fmt.Println("记录3：", user)
 
 	defer db.Close()
 }
