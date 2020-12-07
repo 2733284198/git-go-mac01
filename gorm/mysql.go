@@ -24,9 +24,21 @@ func main() {
 	var user []User
 	//var user User
 
-	db.Where("id > ?", "3").Find(&user)
+	//db.Where("id > ?", "3").Find(&user)
+	//db.Select([]string{"name", "age"}).Find(&user)
+
+	//db.Debug().Select("id ,name, age").Find(&user)
+	db.Debug().Select("id ,name, age").Order("id desc").Find(&user)
 	// `deleted_at` IS NULL AND ((name = 'jinzhu' AND age >= '20'))
 	fmt.Println("记录3：", user)
+
+	// db.table
+	db.Table("users").Where("id > ?", "3").Select("id,name,age").Scan(&user)
+	fmt.Println("db-Table记录：", user)
+
+	//db.Debug().Select([]string{"id,name,age"}).Find(&user) //SELECT name,
+	// age FROM `user`  WHERE `user`.`deleted_at` IS NULL
+	//fmt.Println("列出表中name与age字段：", user)
 
 	defer db.Close()
 }
